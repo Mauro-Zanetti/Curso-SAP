@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Tienda Online JS</h1>
+        <label for="regNom">Nombre:</label><input type="text" name="nombre" onfocusout="validarNom()" id="regNom">
+        <p id="idNom"></p>
+        <label for="regMail">Email:</label><input type="text" name="email" onfocusout="validarMail()" id="regMail">
+        <p id="idMail"></p>
+        <label for="regDNI">DNI:</label><input type="text" name="dni" onfocusout="validarDNI()" id="regDNI">
+        <p id="idDNI"></p>
+        <label for="regFdN">Fecha de Nacimiento (MM-DD-YYYY):</label><input type="text" name="fecha_nacimiento" onfocusout="validarFdN()" id="regFdN">
+        <p id="idFdN"></p>
+        <button onclick="validar()">Aceptar</button>
+        <script src="EjTest.js"></script>
+    </body>
+</html>

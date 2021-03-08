@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Ejercicio 11</title>
+        <style type="text/css">
+        body {font-family: arial, helvetica;}
+        fieldset {
+            width: 250px;
+        }
+        </style>
+    </head>
+    <body>
+        <h1>Ejercicio 11</h1>
+
+        <fieldset id="menuOperaciones" style="display: block;">
+            <legend>Menu Operaciones</legend>
+            <label for="busqueda"><input id="menuOperaciones_busqueda" type="radio" name="menuOp" value="busqueda" checked> Buscar Usuario</label><br>
+            <label for="listar"><input id="menuOperaciones_listar" type="radio" name="menuOp" value="listar"> Listar Usuarios</label><br>
+            <label for="salir"><input id="menuOperaciones_salir" type="radio" name="menuOp" value="salir"> Salir del programa</label><br><br>
+            <button onclick="menuOperaciones()">Aceptar</button>
+        </fieldset>
+
+        <fieldset id="menuBusqueda" style="display: none;">
+            <legend>Menu Busqueda</legend>
+            <label for="busquedaID"><input id="menuBusqueda_id" type="radio" name="busquedaUsu" value="busquedaID" checked> ID</label><br>
+            <label for="busquedaNom"><input id="menuBusqueda_nom" type="radio" name="busquedaUsu" value="busquedaNom"> Nombre</label><br>
+            <label for="busquedaTel"><input id="menuBusqueda_tel" type="radio" name="busquedaUsu" value="busquedaTel"> Telefono</label><br>
+            <label for="busquedaEmail"><input id="menuBusqueda_email" type="radio" name="busquedaUsu" value="busquedaEmail"> Email</label><br><br>
+            <button onclick="menuBusqueda()">Aceptar</button>
+        </fieldset>
+
+        <fieldset id="busquedaPorX" style="display: none;">
+            <legend>Busqueda de Usuario</legend>
+            <input type="text" id="busquedaPorX_input" value="" placeholder="">
+            <button onclick="busquedaPorX()">Aceptar</button>
+        </fieldset>
+
+        <fieldset id="mostrarUsuario" style="display: none;">
+            <legend>Usuario:</legend>
+            <p id="mostrarUsuario_id"></p>
+            <p id="mostrarUsuario_nom"></p>
+            <p id="mostrarUsuario_tel"></p>
+            <p id="mostrarUsuario_email"></p>
+            <button onclick="siguiente()" id="mostrarUsuario_sig" style="display: none;">Siguiente</button>
+            <button onclick="continuar()" id="mostrarUsuario_con" style="display: none;">Continuar</button>
+        </fieldset>
+
+        <fieldset id="menuSalida" style="display: none;">
+            <legend>Desea continuar o salir?</legend>
+            <p id="menuSalida_text"></p>
+            <label for="continuar"><input id="menuSalida_continuar" type="radio" name="mSalida" value="continuar" checked> Continuar</label><br>
+            <label for="salir"><input id="menuSalida_salir" type="radio" name="mSalida" value="salir"> Salir</label><br><br>
+            <button onclick="menuSalida()">Aceptar</button>
+        </fieldset>
+
+        <script src="Ej12.js"></script>
+    </body>
+</html>
