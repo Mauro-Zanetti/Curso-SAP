@@ -1,0 +1,9 @@
+---
+applications:
+  - name: Final-srv
+    path: .
+    memory: 256M
+    buildpacks:
+      - nodejs_buildpack
+    services:
+      - Final-db
