@@ -12,10 +12,6 @@ por lo cual nos comenta lo siguiente que hay que tener en cuenta.
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  ADVERTENCIA
-//  El codigo que sigue funciona pero se que no esta muy bien, y que se puede hacer mas legible, el miercoles
-//  queria refinarlo preguntando y viendo la pagina de CAP para ver si lo puedo mejorar
-//  
 //  En postman:
 //  POST en http://localhost:4004/api/Application
 //  {
@@ -26,65 +22,45 @@ por lo cual nos comenta lo siguiente que hay que tener en cuenta.
 //  }
 //  y para verlo
 //  http://localhost:4004/api/Clientes?$expand=proyecto($expand=tecDif($expand=tec_dif,dif_tec))
-//  (tambien queria hacer una mejor vista)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 const cds = require("@sap/cds");
 const { Tecnologias, Dificultades, Tecno_Dific, Clientes, Proyectos } = cds.entities;
 
+//-------------------------------------------XxxX-------------------------------------------//
 
-async function getTecnologias(nom) { //.from devuelve araay, .one devuelve 1 objeto (no seria nesesario usar [0])
+// const tecData = await getTecnologias(tecnologia);
+
+// async function getTecnologias(nom) {
+//     return await cds.run(
+//         SELECT.one(Tecnologias)
+//         .where({ nombre : nom })
+//     );
+// }
+
+// const tecData = await getInfo(Tecnologias, { nombre : tecnologia });
+
+async function getInfo(entidad, objCampo) {
     return await cds.run(
-        SELECT.one(Tecnologias)
-        .where({ nombre : nom })
+        SELECT.one(entidad)
+        .where(objCampo)
     );
 }
 
-async function getDificultadesPorNiv(dif) {
-    return await cds.run(
-        SELECT.one(Dificultades)
-        .where({ nivel : dif })
-    );
-}
-
-async function getDificultadesPorID(difID) {
-    return await cds.run(
-        SELECT.one(Dificultades)
-        .where({ ID : difID })
-    );
-}
-
-async function getProyectos(nom) {
-    return await cds.run(
-        SELECT.one(Proyectos)
-        .where({ nombre : nom })
-    );
-}
-
-async function getClientes(nom) {
-    return await cds.run(
-        SELECT.one(Clientes)
-        .where({ nombre : nom })
-    );
-}
-
-async function getTecnoDific(nomID, proyectID) {
-    return await cds.run(
-        SELECT.one(Tecno_Dific)
-        .where({ tec_dif_ID : nomID, proyecto_TD_ID : proyectID })
-    );
-}
+//-------------------------------------------XxxX-------------------------------------------//
 
 async function crear(entidad, info, texto) {
     try {
         await cds.run(INSERT.into(entidad).entries(info));
-        console.log(`Terminado ${texto}`);
+        // console.log(`Terminado ${texto}`);
     } catch (err) {
         console.log(err);
         console.log("TERROR 10");
     }
 }
+
+//-------------------------------------------XxxX-------------------------------------------//
 
 async function updateTecDif(tecDataID, proyecDataID, difDataID) {
     await cds.run(
@@ -94,6 +70,8 @@ async function updateTecDif(tecDataID, proyecDataID, difDataID) {
     );
 }
 
+//-------------------------------------------XxxX-------------------------------------------//
+
 async function updateProyecto(nomID, cambio) {
     await cds.run(
         UPDATE(Proyectos)
@@ -102,64 +80,73 @@ async function updateProyecto(nomID, cambio) {
     );
 }
 
+//-------------------------------------------XxxX-------------------------------------------//
+
+async function crearTecno_Dific(tecData, difData, proyecData) {
+    let entrada = {
+        tec_dif_ID: tecData.ID,
+        dif_tec_ID: difData.ID,
+        proyecto_TD_ID: proyecData.ID
+    };
+    await crear(Tecno_Dific, entrada, "Tecno_Dific");
+}
+
+//-------------------------------------------XxxX-------------------------------------------//
+
+async function crearProyecto(proyecto, cliData, dificultad) {
+    let entrada = {
+        nombre: proyecto,
+        cliente_Rel_ID: cliData.ID,
+        costeDeProyecto: dificultad
+    };
+    await crear(Proyectos, entrada, "Proyectos");
+}
+
+//-------------------------------------------XxxX-------------------------------------------//
+
 module.exports = cds.service.impl(async (srv) => {
 
     srv.on('Application', async (req)=>{
         const { tecnologia, dificultad, proyecto, cliente } = req.data;
+        //{ Tecnologias, Dificultades, Tecno_Dific, Clientes, Proyectos }
         try {
-            const tecData = await getTecnologias(tecnologia);
-            const difData = await getDificultadesPorNiv(dificultad);
-            const proyecData = await getProyectos(proyecto);
-            const cliData = await getClientes(cliente);
+            const tecData = await getInfo(Tecnologias, { nombre : tecnologia });
+            const difData = await getInfo(Dificultades, { nivel : dificultad });
+            const proyecData = await getInfo(Proyectos, { nombre : proyecto });
+            const cliData = await getInfo(Clientes, { nombre : cliente });
             
             if (!(tecData && difData && cliData && proyecto)) { //parametro de tecnologia, dificultad o proyecto incorrecto
                 return "Datos incopletos o invalidos"
+
             } else if (proyecData && proyecData.cliente_Rel_ID !== cliData.ID) { //si el proyecto ya tiene un cliente
                 return "Ese proyecto pertenece a otro cliente"
-            } else if (!proyecData) { //crea proyecto
-                //crear proyecto
-                let entrada = {
-                    nombre          : proyecto,
-                    cliente_Rel_ID  : cliData.ID,
-                    costeDeProyecto : dificultad
-                };
-                await crear(Proyectos, entrada, "Proyectos");
-                const proyecData2 = await getProyectos(proyecto);
-                // console.log(proyecData2);
-                entrada = {
-                    tec_dif_ID      : tecData.ID,
-                    dif_tec_ID      : difData.ID,
-                    proyecto_TD_ID  : proyecData2.ID
-                };
-                // console.log(entrada);
-                await crear(Tecno_Dific, entrada, "Tecno_Dific");
 
-                return "exito"
+            } else if (!proyecData) { //si no existe un proyecto con el nobre dado
+                //crearProyecto y crearTecno_Dific
+                await crearProyecto(proyecto, cliData, dificultad);
+                await crearTecno_Dific(tecData, difData, await getInfo(Proyectos, { nombre : proyecto }) );
+                return "Proyecto creado"
+
             } else { //si proyecto ya existe
-                const tecDifData = await getTecnoDific(tecData.ID, proyecData.ID);
-                console.log(tecDifData);
-                console.log("tecDifData");
-                if (!tecDifData) { //crear otro tecDif
-                    let entrada = {
-                        tec_dif_ID      : tecData.ID,
-                        dif_tec_ID      : difData.ID,
-                        proyecto_TD_ID  : proyecData.ID
-                    };
-                    console.log(entrada);
-                    await crear(Tecno_Dific, entrada, "Tecno_Dific");
-                    updateProyecto(proyecto, dificultad);
-                    return "exito2";
-                } else {    //update un tecDif
-                    updateTecDif(tecData.ID, proyecData.ID, difData.ID);
-                    const difData2 = await getDificultadesPorID(tecDifData.dif_tec_ID);
-                    updateProyecto(proyecto, dificultad - difData2.nivel);
-                    return "exito3";
+                const tecDifData = await getInfo(Tecno_Dific, { tec_dif_ID : tecData.ID, proyecto_TD_ID : proyecData.ID });
+
+                if (!tecDifData) { //si la tecnologia dada no esta en el proyecto dado
+                    //crear otro tecDif (y actualizar proyecto)
+                    await crearTecno_Dific(tecData, difData, proyecData);
+                    await updateProyecto(proyecto, dificultad);
+                    return "Se agrago una nueva tecnologia al proyecto";
+
+                } else { //si la tecnologia dada esta en el proyecto dado
+                    //update el tecDif (y actualizar proyecto)
+                    await updateTecDif(tecData.ID, proyecData.ID, difData.ID);
+                    const auxDifData = await getInfo(Dificultades, { ID : tecDifData.dif_tec_ID });
+                    await updateProyecto(proyecto, dificultad - auxDifData.nivel);
+                    return "Se actualizo el nivel de la tecnologia";
+
                 }
             }
-
         } catch(err) {
             console.log("TERROR: ", err);
         }
     });
-
 })
