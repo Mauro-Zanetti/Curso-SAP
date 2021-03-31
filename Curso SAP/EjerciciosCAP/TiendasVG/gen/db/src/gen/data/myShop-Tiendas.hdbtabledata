@@ -1,0 +1,29 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "MYSHOP_TIENDAS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "myShop-Tiendas.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "ID",
+          "NOMBRE",
+          "DIRECCION"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "ID": "ID",
+        "NOMBRE": "nombre",
+        "DIRECCION": "direccion"
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+using MYSHOP_DUENIOS_TIENDAS as MYSHOP_DUENIOS_TIENDAS;
+entity MYSHOP_DUENIOS {
+  key ID : Integer;
+  NOMBRE : String(50);
+  EDAD : Integer;
+  TIENDAD : association[*] to MYSHOP_DUENIOS_TIENDAS on TIENDAD.DUENIO_TIENDA_ID = ID;
+};

@@ -1,0 +1,9 @@
+using MYSHOP_TIPOS as MYSHOP_TIPOS;
+using MYSHOP_PRODUCTOS as MYSHOP_PRODUCTOS;
+entity MYSHOP_SUBTIPOS {
+  key ID : Integer;
+  NOMBRE : String(50);
+  TIPO : association to MYSHOP_TIPOS on TIPO.ID = TIPO_ID;
+  PRODUCTO : association[*] to MYSHOP_PRODUCTOS on PRODUCTO.SUBTIPO_ID = ID;
+  TIPO_ID : Integer;
+};

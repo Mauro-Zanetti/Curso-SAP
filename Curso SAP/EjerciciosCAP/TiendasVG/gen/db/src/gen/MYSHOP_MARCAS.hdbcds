@@ -1,0 +1,6 @@
+using MYSHOP_PRODUCTOS as MYSHOP_PRODUCTOS;
+entity MYSHOP_MARCAS {
+  key ID : Integer;
+  NOMBRE : String(50);
+  PRODUCTO : association[*] to MYSHOP_PRODUCTOS on PRODUCTO.MARCA_ID = ID;
+};

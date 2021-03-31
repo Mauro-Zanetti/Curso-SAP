@@ -1,0 +1,33 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "MYSHOP_PRODUCTOS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "myShop-Productos.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "ID",
+          "NOMBRE",
+          "SUBTIPO_ID",
+          "MARCA_ID",
+          "PRECIO_ID"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "ID": "ID",
+        "NOMBRE": "nombre",
+        "SUBTIPO_ID": "subTipo_ID",
+        "MARCA_ID": "marca_ID",
+        "PRECIO_ID": "precio_ID"
+      }
+    }
+  ]
+}

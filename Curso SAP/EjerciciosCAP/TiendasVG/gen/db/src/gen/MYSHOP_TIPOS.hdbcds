@@ -1,0 +1,6 @@
+using MYSHOP_SUBTIPOS as MYSHOP_SUBTIPOS;
+entity MYSHOP_TIPOS {
+  key ID : Integer;
+  NOMBRE : String(50);
+  SUBTIPO : association[*] to MYSHOP_SUBTIPOS on SUBTIPO.TIPO_ID = ID;
+};

@@ -1,0 +1,33 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "MYSHOP_TIENDAS_PRODUCTOS_STOCK",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "myShop-Tiendas_Productos_Stock.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "TIENDA_PRODUCTO_ID",
+          "PRODUCTO_TIENDA_ID",
+          "CANTIDAD",
+          "MAXI",
+          "MINI"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "TIENDA_PRODUCTO_ID": "tienda_producto_ID",
+        "PRODUCTO_TIENDA_ID": "producto_tienda_ID",
+        "CANTIDAD": "cantidad",
+        "MAXI": "maxi",
+        "MINI": "mini"
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+---
+applications:
+  - name: Tiendas-srv
+    path: .
+    memory: 256M
+    buildpacks:
+      - nodejs_buildpack
+    services:
+      - Tiendas-db

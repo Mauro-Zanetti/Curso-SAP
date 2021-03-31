@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "MYSHOP_DUENIOS_TIENDAS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "myShop-Duenios_Tiendas.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "DUENIO_TIENDA_ID",
+          "TIENDA_DUENIO_ID"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "DUENIO_TIENDA_ID": "duenio_tienda_ID",
+        "TIENDA_DUENIO_ID": "tienda_duenio_ID"
+      }
+    }
+  ]
+}

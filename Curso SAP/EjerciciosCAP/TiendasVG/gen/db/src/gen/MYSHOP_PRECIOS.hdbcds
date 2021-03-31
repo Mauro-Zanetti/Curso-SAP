@@ -1,0 +1,7 @@
+using MYSHOP_PRODUCTOS as MYSHOP_PRODUCTOS;
+entity MYSHOP_PRECIOS {
+  key ID : Integer;
+  COSTO : Integer;
+  MONEDA : String(50);
+  PRODUCTOP : association[*] to MYSHOP_PRODUCTOS on PRODUCTOP.PRECIO_ID = ID;
+};
