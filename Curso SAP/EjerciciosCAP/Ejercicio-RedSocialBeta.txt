@@ -1,0 +1,67 @@
+Se nos pide realizar el modelado de una red social para que los usuarios puedan entablar
+nuevas relaciones entre sí y compartir contenidos, para ello debemos tener en cuenta 
+los siguientes requerimientos: 
+
+Vamos a necesitar las entidades: Usuario, Perfil, Mensajes, Publicaciones y Comentarios.
+
+Entidades y relaciones: 
+a) Usuario 
+- Debe tener un username y un password (Strings) -> Ambos datos obligatorios
+- Amigos (Integer)
+- Estatus: Boleano (Esto me sirve para saber si esta en linea o no)
+- Debe tener los datos personales de la persona que porta el perfil:
+	- Aspect Usuario_Humano: 
+		- Nombre (String) -> Obligatorio
+		- Apellido (String) -> Obligatorio
+		- Pais de Origen -> Obligatorio (Pueden usar country, que solo admite un codigo de 3 letras, ej: Argentina -> 'ARG')
+		- Genero (enum -> 1 = Femenino; 2 = Masculino; 3 = Otro)
+		- Telefono (String)
+		- Fecha de nacimiento -> Obligatorio (Usar Date)
+		- Correo electronico (array of {usuario, dominio, full}) -> Obligatorio
+		ej: {
+			usuario: elPepe
+			dominio: @gmail.com
+			full: elPepe@gmail.com
+		    }
+		En vez de hacer un array of, Para el correo electronico se puede 
+		usar un "structured type" que se llame, por ejemplo, Email que 
+		tenga usuario, dominio y full, entonces al definir correoElectronico	
+		en Usuario_Humano, seria correoElectronico : Email.
+
+- Debe tener una composicion de muchos mensajes.
+- Debe tener muchas publicaciones, muchos comentarios y un solo perfil. 
+
+b) Mensajes: 
+- Nombre del remitente (string) -> Obligatorio
+- Contenido (String)
+- Leido: Bool
+- multimedia : Array of {tipo : String, tamaño: Decimal (7,3)};
+(En multimedia, un ejemplo podría ser tipo: Foto, peso: 12). Tamaño es el peso del archivo. 
+
+c) Perfil
+- Debe tener titulo, descripcion (Strings)
+- Debe tener visualizaciones (Integer)
+- Debe tener una categoría que evalua la actividad del usuario, que mide la antiguedad del perfil segun parametros de la propia red social. 
+	Se puede usar un enum (1 = Bronce; 2 = Plata; 3 = Oro; 4 = Diamante; 0 = Carbón);
+- Un perfil tiene 1 solo usuario y muchas publicaciones;
+
+d) Publicaciones -> Debe usar "managed"
+- Titulo (String) -> Default "titulo"
+- Cantidad de veces compartido (Integer)
+- Tipo -> enum (1 = Texto; 2 = Foto; 3 = Video; 4=url);
+- VistaPrevia (Bool) 
+- Likes (Integer)
+- Debe tener un solo usuario, un solo perfil y muchos comentarios. 
+
+e) Comentarios -> Debe usar "managed"
+- Contenido (String) -> Max 300 caracteres 
+- Debe estar asociado a un usuario y a una publicación. 
+
+Generar las siguientes vistas: 
+- Una vista donde un perfil nos muestre su usuario con sus publicaciones.
+- Una vista que nos permita ver los usuarios provenientes de Argentina que tengan más de 200 amigos. 
+- Una vista que nos permita ver las publicaciones que han sido compartidas más de 100 veces y el nombre de usuario que la compartió.  
+
+
+Notas: Importante usar cuid para autogenerar los IDS.
+		
